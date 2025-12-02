@@ -1,0 +1,57 @@
+<div class="search-results-container">
+    <!-- Sección de Canciones -->
+    @if (results().tracks && results().tracks!.length > 0) {
+        <div class="results-section">
+            <h2>Canciones</h2>
+            <div class="results-scroll">
+                @for (track of results().tracks; track track.id) {
+                    <div class="result-card track-card" (click)="onTrackClick(track)">
+                        <img [src]="track.album?.images?.at(0)?.url || ''" [alt]="track.name" class="card-image">
+                        <div class="card-info">
+                            <h3 class="card-title">{{ truncateTitle(track.name, 20) }}</h3>
+                            <p class="card-subtitle">{{ track.artists?.at(0)?.name || 'Unknown' }}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Sección de Artistas -->
+    @if (results().artists && results().artists!.length > 0) {
+        <div class="results-section">
+            <h2>Artistas</h2>
+            <div class="results-scroll">
+                @for (artist of results().artists; track artist.id) {
+                    <div class="result-card artist-card" (click)="onArtistClick(artist)">
+                        <img [src]="artist.images?.at(0)?.url || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Crect fill=%22%23ddd%22 width=%22150%22 height=%22150%22/%3E%3Ctext fill=%22%23999%22 font-family=%22sans-serif%22 font-size=%2214%22 dy=%2210.5%22 font-weight=%22bold%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22%3EArtist%3C/text%3E%3C/svg%3E'" [alt]="artist.name" class="card-image artist-image">
+                        <div class="card-info">
+                            <h3 class="card-title">{{ truncateTitle(artist.name, 20) }}</h3>
+                            @if (artist.followers) {
+                                <p class="card-subtitle">{{ artist.followers.total | number }} seguidores</p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Sección de Álbumes -->
+    @if (results().albums && results().albums!.length > 0) {
+        <div class="results-section">
+            <h2>Álbumes</h2>
+            <div class="results-scroll">
+                @for (album of results().albums; track album.id) {
+                    <div class="result-card album-card" (click)="onAlbumClick(album)">
+                        <img [src]="album.images?.at(0)?.url || ''" [alt]="album.name" class="card-image">
+                        <div class="card-info">
+                            <h3 class="card-title">{{ truncateTitle(album.name, 20) }}</h3>
+                            <p class="card-subtitle">{{ album.artists?.at(0)?.name || 'Unknown' }}</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -17,8 +17,8 @@ export class LoginService {
 
     const body = new URLSearchParams();
     body.set("grant_type", "client_credentials");
-    body.set("client_id", "9f355a2b99db4d339a0043569db157b2");
-    body.set("client_secret", "4a1734110bfa4fcdbc97ab9d9fdc978e");
+    body.set("client_id", "2111b3afabb74627a8e51d834f6363b2");
+    body.set("client_secret", "51a6f25d66374194b3063166b06b1990");
 
     return this._http.post<any>("https://accounts.spotify.com/api/token", body.toString(), {
       headers:{

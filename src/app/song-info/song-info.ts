@@ -19,4 +19,14 @@ export class SongInfo{
   displayMode(){
     return this.display_mode();
   }
+
+  truncateTitle(title: string | undefined, maxLength: number = 20): string {
+    if (!title) {
+      return '';
+    }
+    if (title.length <= maxLength) {
+      return title;
+    }
+    return title.substring(0, maxLength).trim() + '...';
+  }
 }

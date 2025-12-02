@@ -1,13 +1,20 @@
-<audio controls hidden></audio>
-<input type="range" id="control-bar">
+<audio #audioElement hidden></audio>
+<input 
+    type="range" 
+    id="control-bar" 
+    #progressBar
+    min="0" 
+    max="100" 
+    value="0"
+    (input)="onProgressBarChange($event)">
 <div class="player-buttons">
-    <span class="back">
+    <span class="back" (click)="skipBackward()">
         <i class="fa-solid fa-backward-step"></i>
     </span>
-    <span class="play">
-        <i class="fa-solid fa-play"></i>
+    <span class="play" (click)="togglePlayPause()">
+        <i class="fa-solid" [class.fa-play]="!isPlaying" [class.fa-pause]="isPlaying"></i>
     </span>
-    <span class="next">
+    <span class="next" (click)="skipForward()">
         <i class="fa-solid fa-forward-step"></i>
     </span>
 </div>

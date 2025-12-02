@@ -13,6 +13,18 @@ const routes: Routes = [
     component: Player
   },
   {
+    path:'track/:id',
+    component: Player
+  },
+  {
+    path:'artist/:id',
+    component: Player
+  },
+  {
+    path:'album/:id',
+    component: Player
+  },
+  {
     path:'secondary',
     component: StaticContainer,
     children:[

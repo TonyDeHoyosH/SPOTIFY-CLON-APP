@@ -1,18 +1,187 @@
 :host{
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
 }
 
-#main{
-    width: 95%;
-    height: 85%;
+.player-container{
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 1fr 400px;
     grid-template-rows: 100%;
+    overflow: hidden;
+}
+
+/* Contenido principal (rojo) */
+.main-content{
+    display: grid;
+    grid-template-rows: 80px 1fr 110px;
+    padding: 15px;
+    gap: 15px;
+    overflow: hidden;
+}
+
+/* Buscador (azul claro) */
+.search-section{
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(100, 200, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-items: center;
+    gap: 10px;
+}
+
+.search-controls{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.entity-selector{
+    padding: 8px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 1em;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 120px;
+}
+
+.entity-selector:hover{
+    border-color: #999;
+}
+
+.entity-selector:focus{
+    border-color: #4CAF50;
+}
+
+.crud-buttons{
+    display: flex;
+    gap: 8px;
+}
+
+.crud-btn{
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: white;
+    font-size: 1em;
+}
+
+.crud-btn:hover{
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-btn{
+    background-color: #4CAF50;
+}
+
+.create-btn:hover{
+    background-color: #45a049;
+}
+
+.read-btn{
+    background-color: #2196F3;
+}
+
+.read-btn:hover{
+    background-color: #0b7dda;
+}
+
+.update-btn{
+    background-color: #FF9800;
+}
+
+.update-btn:hover{
+    background-color: #e68900;
+}
+
+.delete-btn{
+    background-color: #f44336;
+}
+
+.delete-btn:hover{
+    background-color: #da190b;
+}
+
+.search-bar{
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 12px 20px;
+    border-radius: 25px;
+    gap: 10px;
+    width: 100%;
+}
+
+.search-bar i{
+    color: #666;
+    font-size: 1.2em;
+}
+
+.search-bar .clear-icon{
+    cursor: pointer;
+    color: #999;
+    font-size: 1em;
+    transition: color 0.2s;
+}
+
+.search-bar .clear-icon:hover{
+    color: #333;
+}
+
+.search-bar input{
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1em;
+    color: #333;
+}
+
+.search-bar input::placeholder{
+    color: #999;
+}
+
+/* Info de la canción (azul marino) */
+.song-display{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 50, 100, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    overflow: hidden;
+}
+
+/* Controles (morado) */
+.controls-section{
+    background-color: rgba(150, 50, 150, 0.1);
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+/* Queue/Playlist (verde - aside) */
+.queue-section{
+    background-color: rgba(50, 200, 100, 0.1);
+    border-left: 1px solid #ddd;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 15px;
+    height: 100%;
 }

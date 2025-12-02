@@ -1,5 +1,6 @@
-import {spotify_environments} from "./environment.local";
+import {spotify, local} from "./environment.local";
 
 export const environment = {
-    ...spotify_environments,
+    ...spotify,
+    LOCAL_API_URL: 'http://localhost:3000/api'
 };
