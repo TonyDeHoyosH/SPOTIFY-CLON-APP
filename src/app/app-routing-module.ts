@@ -13,6 +13,10 @@ const routes: Routes = [
     component: Player
   },
   {
+    path:'search/:query',
+    component: Player
+  },
+  {
     path:'track/:id',
     component: Player
   },

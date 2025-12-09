@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SpotifyAlbumService } from '../services/spotify-api/spotify-album-service';
 import { SpotifySearchService } from '../services/spotify-api/spotify-search-service';
+import { AppRouter } from '../services/general/app-router';
 import { Album } from '../interfaces/album';
 import { SearchResults } from '../interfaces/search-results';
 import { Track } from '../interfaces/track';
@@ -25,6 +26,7 @@ export class Player implements OnInit{
   currentQueue: Track[] = [];
   currentCover: any = null;
   currentTrackIndex: number = 0;
+  appRouter: AppRouter;
 
   constructor(
     private _spotifyAlbum: SpotifyAlbumService,
@@ -33,12 +35,20 @@ export class Player implements OnInit{
     private route: ActivatedRoute
   ){
     this.album$ = this._spotifyAlbum.getAlbum('4aawyAB9vmqN3uQ7FjRGTy')
+    this.appRouter = new AppRouter(this.router);
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const id = params['id'];
-      if (id) {
+      const query = params['query'];
+      
+      if (query) {
+        // Si hay un parámetro de búsqueda en la URL
+        this.searchQuery = query;
+        this.showSearchResults = true;
+        this.searchResults$ = this._spotifySearch.search(query);
+      } else if (id) {
         const path = this.route.snapshot.url[0]?.path;
         if (path === 'album') {
           this.loadAlbum(id);
@@ -68,6 +78,8 @@ export class Player implements OnInit{
     if (event.key === 'Enter' && this.searchQuery.trim()) {
       this.showSearchResults = true;
       this.searchResults$ = this._spotifySearch.search(this.searchQuery);
+      // Actualizar la URL con el término de búsqueda
+      this.appRouter.navigateToSearch(this.searchQuery);
     }
   }
 
@@ -88,21 +100,21 @@ export class Player implements OnInit{
     this.currentCover = track.album?.images?.at(0);
     this.currentTrackIndex = 0;
     
-    this.router.navigate(['/track', track.id]);
+    this.appRouter.navigateToTrack(track.id);
   }
 
   onArtistClick(artist: Artist): void {
     this.selectedArtist = artist;
     this.showSearchResults = false;
     this.searchResults$ = null;
-    this.router.navigate(['/artist', artist.id]);
+    this.appRouter.navigateToArtist(artist.id);
   }
 
   onAlbumClick(album: Album): void {
     this.showSearchResults = false;
     this.searchResults$ = null;
     this.loadAlbum(album.id);
-    this.router.navigate(['/album', album.id]);
+    this.appRouter.navigateToAlbum(album.id);
   }
 
   // Métodos para navegar entre canciones
