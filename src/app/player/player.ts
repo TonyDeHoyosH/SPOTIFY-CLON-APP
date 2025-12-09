@@ -44,7 +44,6 @@ export class Player implements OnInit{
       const query = params['query'];
       
       if (query) {
-        // Si hay un parámetro de búsqueda en la URL
         this.searchQuery = query;
         this.showSearchResults = true;
         this.searchResults$ = this._spotifySearch.search(query);
@@ -53,11 +52,9 @@ export class Player implements OnInit{
         if (path === 'album') {
           this.loadAlbum(id);
         } else if (path === 'track') {
-          // Si es un track individual, cargar su información
           this.loadTrackById(id);
         }
       } else {
-        // Cargar álbum por defecto al inicio
         this.loadAlbum('63YUyakTLOBCWBab1oEtxe');
       }
     });
@@ -68,7 +65,6 @@ export class Player implements OnInit{
     this.searchResults$ = null;
     this.album$ = this._spotifyAlbum.getAlbum(albumId);
     
-    // Suscribirse para actualizar el queue con las canciones del álbum
     this.album$.subscribe(album => {
       this.currentQueue = album.tracks || [];
       this.currentCover = album.images?.at(0);
@@ -83,19 +79,15 @@ export class Player implements OnInit{
   }
 
   loadTrackById(trackId: string): void {
-    // Mantener el track seleccionado si ya existe y coincide
     if (this.selectedTrack && this.selectedTrack.id === trackId) {
       return;
     }
-    // Si el track no está en el queue actual, necesitaría un servicio
-    // para obtener la información del track individual
   }
 
   onSearch(event: KeyboardEvent): void {
     if (event.key === 'Enter' && this.searchQuery.trim()) {
       this.showSearchResults = true;
       this.searchResults$ = this._spotifySearch.search(this.searchQuery);
-      // Actualizar la URL con el término de búsqueda
       this.appRouter.navigateToSearch(this.searchQuery);
     }
   }
@@ -106,15 +98,13 @@ export class Player implements OnInit{
     this.searchResults$ = null;
   }
 
-  // Métodos de navegación para elementos clickeados
   onTrackClick(track: Track): void {
     this.showSearchResults = false;
     this.searchResults$ = null;
     
-    // Si el track tiene álbum, cargar todo el álbum para tener el queue completo
+    
     if (track.album?.id) {
       this.album$ = this._spotifyAlbum.getAlbum(track.album.id);
-      // Encontrar el índice del track seleccionado en el álbum
       this.album$.subscribe(album => {
         this.currentQueue = album.tracks || [];
         this.currentCover = album.images?.at(0);
@@ -123,14 +113,12 @@ export class Player implements OnInit{
           this.currentTrackIndex = trackIndex;
           this.selectedTrack = this.currentQueue[trackIndex];
         } else {
-          // Si no se encuentra el track en el álbum, agregarlo al inicio
           this.currentQueue = [track, ...this.currentQueue];
           this.currentTrackIndex = 0;
           this.selectedTrack = track;
         }
       });
     } else {
-      // Si no tiene álbum, poner solo esta canción en el queue
       this.selectedTrack = track;
       this.currentQueue = [track];
       this.currentCover = track.album?.images?.at(0);
@@ -154,7 +142,6 @@ export class Player implements OnInit{
     this.appRouter.navigateToAlbum(album.id);
   }
 
-  // Métodos para navegar entre canciones
   onPreviousTrack(): void {
     if (this.currentQueue.length === 0) return;
     
