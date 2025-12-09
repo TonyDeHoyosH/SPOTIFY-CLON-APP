@@ -1,55 +1,57 @@
-@if (album$ | async; as album) {
-    <div class="player-container">
-        <!-- Sección principal (rojo) -->
-        <div class="main-content">
-            <!-- Buscador (azul claro) -->
-            <div class="search-section">
-                <!-- Barra de búsqueda -->
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input 
-                        type="text" 
-                        placeholder="Buscar en Spotify..."
-                        [(ngModel)]="searchQuery"
-                        (keydown)="onSearch($event)">
-                    @if (showSearchResults) {
-                        <i class="fa-solid fa-times clear-icon" (click)="clearSearch()"></i>
-                    }
-                </div>
-            </div>
-
-            <!-- Mostrar resultados de búsqueda o info de canción -->
-            <div class="song-display">
-                @if (showSearchResults && searchResults$) {
-                    @if (searchResults$ | async; as results) {
-                        <app-search-results 
-                            [results]="results"
-                            (trackClick)="onTrackClick($event)"
-                            (artistClick)="onArtistClick($event)"
-                            (albumClick)="onAlbumClick($event)">
-                        </app-search-results>
-                    }
-                } @else if (selectedTrack) {
-                    <app-song-info [song]="selectedTrack" [cover]="selectedTrack.album?.images?.at(0)" displayMode="display"></app-song-info>
-                } @else {
-                    <app-song-info [song]="album?.tracks?.at(0)" [cover]="album?.images?.at(0)" displayMode="display"></app-song-info>
+<div class="player-container">
+    <!-- Sección principal (rojo) -->
+    <div class="main-content">
+        <!-- Buscador (azul claro) -->
+        <div class="search-section">
+            <!-- Barra de búsqueda -->
+            <div class="search-bar">
+                <i class="fa-solid fa-search"></i>
+                <input 
+                    type="text" 
+                    placeholder="Buscar en Spotify..."
+                    [(ngModel)]="searchQuery"
+                    (keydown)="onSearch($event)">
+                @if (showSearchResults) {
+                    <i class="fa-solid fa-times clear-icon" (click)="clearSearch()"></i>
                 }
             </div>
-
-            <!-- Controles de reproducción (morado) -->
-            <div class="controls-section">
-                <app-audio-controller 
-                    [currentQueue]="currentQueue"
-                    [currentTrackIndex]="currentTrackIndex"
-                    (previousTrack)="onPreviousTrack()"
-                    (nextTrack)="onNextTrack()">
-                </app-audio-controller>
-            </div>
         </div>
 
-        <!-- Queue/Playlist (verde - aside) -->
-        <div class="queue-section">
-            <app-playlist [playlist]="currentQueue.length > 0 ? currentQueue : album?.tracks" [cover]="currentCover || album?.images?.at(0)"></app-playlist>
+        <!-- Mostrar resultados de búsqueda o info de canción -->
+        <div class="song-display">
+            @if (showSearchResults && searchResults$) {
+                @if (searchResults$ | async; as results) {
+                    <app-search-results 
+                        [results]="results"
+                        (trackClick)="onTrackClick($event)"
+                        (artistClick)="onArtistClick($event)"
+                        (albumClick)="onAlbumClick($event)">
+                    </app-search-results>
+                }
+            } @else if (selectedTrack) {
+                <app-song-info [song]="selectedTrack" [cover]="currentCover" displayMode="display"></app-song-info>
+            } @else if (album$ | async; as album) {
+                <app-song-info [song]="album?.tracks?.at(0)" [cover]="album?.images?.at(0)" displayMode="display"></app-song-info>
+            }
+        </div>
+
+        <!-- Controles de reproducción (morado) -->
+        <div class="controls-section">
+            <app-audio-controller 
+                [currentQueue]="currentQueue"
+                [currentTrackIndex]="currentTrackIndex"
+                (previousTrack)="onPreviousTrack()"
+                (nextTrack)="onNextTrack()">
+            </app-audio-controller>
         </div>
     </div>
-}
+
+    <!-- Queue/Playlist (verde - aside) -->
+    <div class="queue-section">
+        @if (album$ | async; as album) {
+            <app-playlist [playlist]="currentQueue.length > 0 ? currentQueue : album?.tracks" [cover]="currentCover || album?.images?.at(0)"></app-playlist>
+        } @else {
+            <app-playlist [playlist]="currentQueue" [cover]="currentCover"></app-playlist>
+        }
+    </div>
+</div>

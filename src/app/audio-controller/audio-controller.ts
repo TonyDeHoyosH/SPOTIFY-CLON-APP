@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, input, output } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, input, output, effect } from '@angular/core';
 import { Track } from '../interfaces/track';
 
 @Component({
@@ -22,6 +22,18 @@ export class AudioController implements AfterViewInit {
   isPlaying = false;
   currentTime = 0;
   duration = 0;
+
+  constructor() {
+    // Effect para detectar cambios en el track actual
+    effect(() => {
+      const queue = this.currentQueue();
+      const index = this.currentTrackIndex();
+      
+      if (queue.length > 0 && queue[index]) {
+        this.loadTrack(queue[index]);
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     const audio = this.audioElement.nativeElement;
@@ -77,5 +89,21 @@ export class AudioController implements AfterViewInit {
   skipBackward(): void {
     // Retroceder a la canción anterior
     this.previousTrack.emit();
+  }
+
+  loadTrack(track: Track): void {
+    if (!this.audioElement) return;
+    
+    const audio = this.audioElement.nativeElement;
+    const wasPlaying = this.isPlaying;
+    
+    // Cargar la nueva URL del audio
+    audio.src = track.preview_url || '';
+    audio.load();
+    
+    // Si estaba reproduciendo, continuar reproduciendo
+    if (wasPlaying && track.preview_url) {
+      audio.play();
+    }
   }
 }
